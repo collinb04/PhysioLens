@@ -12,7 +12,7 @@ export type Insight = {
   primary_percent?: number | null
   current_state?: Record<string, string> | null
   stability?: Record<string, string> | null
-  signal_strength: 'low' | 'medium' | 'high'
+  signal_strength: 'Low' | 'Medium' | 'High'
   resources?: Record<string, Array<Record<string, string>>> | null
 }
 

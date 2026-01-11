@@ -399,8 +399,8 @@ const selectedDate = ref<string | null>(null)
 
 const signal_strengthPillClass = computed(() => {
   const c = summary.value?.insight.signal_strength
-  if (c === 'high') return 'bg-green-500 text-white'
-  if (c === 'medium') return 'bg-yellow-500 text-white'
+  if (c === 'High') return 'bg-green-500 text-white'
+  if (c === 'Medium') return 'bg-yellow-500 text-white'
   return 'border-gray-200 bg-gray-50 text-gray-800'
 })
 

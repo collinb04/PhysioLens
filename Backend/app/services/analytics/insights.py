@@ -130,13 +130,13 @@ def _signal_strength_label(
     large_count = len(dips_result.large)
 
     if pareto.dominant_key is None:
-        return "low"
+        return "Low"
 
     if dip_count >= max(constants.min_observations, 10) and large_count >= 2:
-        return "high"
+        return "High"
 
     if dip_count >= 5:
-        return "medium"
+        return "Medium"
 
     return "low"
 
