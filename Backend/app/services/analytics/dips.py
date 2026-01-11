@@ -40,13 +40,6 @@ class DipDetectionResult:
 
 @dataclass(frozen=True)
 class DipThresholds:
-    """
-    Heuristic thresholds for dip detection.
-
-    - large_dip_z: single-day dip threshold
-    - persistent_dip_z: threshold for days that qualify as part of a persistent run
-    - persistent_days: minimum consecutive days for a persistent dip run
-    """
     large_dip_z: float = -1.25
     persistent_dip_z: float = -0.75
     persistent_days: int = 2
@@ -60,11 +53,6 @@ def detect_recovery_dips(
 ) -> List[DipEvent]:
     """
     Detect recovery dips from a list of DailyRecord objects.
-
-    Requirements / gates:
-    - Must have at least constants.min_history_days records (conservative)
-    - Must have recovery_baseline.n >= constants.min_observations
-    - Dip detection is based ONLY on recovery_value deviations
 
     Returns:
     - A list of DipEvent, ordered by date, with duplicate dates removed
@@ -153,8 +141,3 @@ def detect_recovery_dips(
 
     # Return chronologically
     return [by_date[k] for k in sorted(by_date.keys())]
-
-
-    # If your detect_recovery_dips currently returns List[DipEvent],
-    # you should adapt it to DipDetectionResult (recommended).
-    # If you already updated dips.py to return DipDetectionResult, this will be unnecessary.

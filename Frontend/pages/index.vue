@@ -299,9 +299,9 @@
 
                   <button
                     class="ml-auto rounded-lg bg-black px-3 py-1.5 text-xs text-white hover:bg-black/90"
-                    @click="goToToday"
+                    @click="goToRecent"
                   >
-                    Today
+                    Most Recent
                   </button>
                 </div>
 
@@ -442,12 +442,12 @@ const selectByIndex = (i: number) => {
 const goPrevDay = () => selectByIndex(selectedIndex.value - 1)
 const goNextDay = () => selectByIndex(selectedIndex.value + 1)
 
-const isoToday = () => new Date().toISOString().slice(0, 10)
+const isoRecent = () => new Date().toISOString().slice(0, 10)
 
-const goToToday = () => {
+const goToRecent = () => {
   const arr = days.value
   if (!arr.length) return
-  const t = isoToday()
+  const t = isoRecent()
   const exact = arr.findIndex(d => d.date === t)
   if (exact !== -1) return selectByIndex(exact)
 

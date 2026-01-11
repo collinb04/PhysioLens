@@ -1,7 +1,7 @@
 # PhysioLens
 
 ## Demo Presentation Link
-
+https://youtu.be/VeDotGIa4bw
 
 ## Project Overview
 
@@ -59,7 +59,6 @@ Most health dashboards overwhelm users with metrics. PhysioLens reduces complexi
 - Frontend (Vue.js/Nuxt): visualization of recovery trends, factor attribution, and insights  
 - Backend (Python FastAPI): data ingestion, analytics pipeline, API endpoints  
 - Analytics Engine: baseline modeling, dip detection, factor attribution  
-- LLM Layer: generates educational, non-diagnostic explanations based on dominant factors
 
 ---
 
@@ -100,8 +99,6 @@ python data/generate_seed_data.py
 ## AI & ML Approach
 
 The core analytics pipeline is intentionally **deterministic, explainable, and auditable**. The system uses classical applied machine learning techniques, including personalized baseline modeling, anomaly detection via standardized deviations, temporal persistence analysis, and attribution under uncertainty.
-
-A large language model (LLM) is layered on top of the analytics to provide **general educational resources** relevant to the detected dominant factor. The LLM does not perform health analysis, make predictions, or generate conclusions.
 
 ---
 
@@ -152,4 +149,9 @@ Validation focuses on correctness and reliability rather than exhaustive coverag
 - Scenario checks to ensure the dominant factor matches each demo dataset
 - Deterministic outputs so results are reproducible across runs
 
+---
+
+## Future Work
+
+- Look for the future-work.md file in docs for an outline of what I would add with more time as of now!
 
