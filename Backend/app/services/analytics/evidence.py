@@ -1,22 +1,19 @@
-# app/services/analytics/evidence.py
 """
 Evidence preparation for UI.
 
 Builds a UI-ready daily timeseries that:
 - shows raw values (recovery + inputs)
 - marks dip days (large / persistent)
-- marks abnormal factor flags (sleep/exercise/nutrition) using the SAME abnormal rule as pareto
+- marks abnormal factor flags (sleep/exercise/nutrition)
 
 This makes the dashboard trustworthy: users can see the same signals the model used.
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
-from datetime import date, timedelta
-from typing import Dict, List, Optional, Tuple
-
-from app.domain.models import DailyRecord
+from datetime import date
+from typing import Dict, List, Optional
+from app.domain.daily_record import DailyRecord
 from app.services.analytics.baselines import BaselineStats, z_score
 from app.services.analytics.dips import DipDetectionResult
 from app.services.analytics.pareto_calculation import DEFAULT_DRIVERS, AttributionThresholds, FactorConfig, ParetoResult
@@ -28,13 +25,12 @@ class TimeseriesDay:
     recovery_value: Optional[float]
     sleep_duration: Optional[float]
     sleep_consistency: Optional[float]
-    exercise_load: Optional[float]
-    nutrition_value: Optional[float]
+    excercise_data_point: Optional[float]
+    nutrition_data_point: Optional[float]
 
     is_dip: bool
     dip_kind: str  # "none" | "large" | "persistent"
 
-    # Factor-level flags for explainability
     factor_abnormal: Dict[str, bool]  # {"sleep": bool, "exercise": bool, "nutrition": bool}
     factor_abs_z: Dict[str, float]    # {"sleep": 0.0.., "exercise": .., "nutrition": ..}
 
@@ -115,8 +111,8 @@ def build_timeseries(
                 "recovery_value": _safe_float(r.recovery_value),
                 "sleep_duration": _safe_float(r.sleep_duration),
                 "sleep_consistency": _safe_float(r.sleep_consistency),
-                "exercise_load": _safe_float(r.exercise_load),
-                "nutrition_value": _safe_float(r.nutrition_value),
+                "excercise_data_point": _safe_float(r.excercise_data_point),
+                "nutrition_data_point": _safe_float(r.nutrition_data_point),
                 "is_dip": is_dip,
                 "dip_kind": kind,
                 "factor_abnormal": factor_abn,

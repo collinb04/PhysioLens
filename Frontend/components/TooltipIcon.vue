@@ -1,6 +1,5 @@
 <template>
   <div class="relative inline-flex items-center">
-    <!-- Info icon -->
     <button
       type="button"
       @click="open = !open"
@@ -10,7 +9,6 @@
       <Info class="h-3.5 w-3.5 opacity-80" aria-hidden="true" />
     </button>
 
-    <!-- Tooltip box -->
     <div
       v-if="open"
       class="absolute z-20 bottom-full right-0 mb-6 w-60

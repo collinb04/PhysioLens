@@ -1,7 +1,4 @@
-# app/services/ingest/store.py
 """
-Hackathon store.
-
 - Loads user data from JSON seed files in /data
 - Optionally allows in-memory overrides (useful for POST /ingest demos)
 
@@ -16,9 +13,9 @@ from datetime import date
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from app.domain.models import DailyRecord
+from app.domain.daily_record import DailyRecord
 
-# In-memory override store (optional, for ingest demos)
+# In-memory override store 
 _IN_MEMORY: Dict[str, List[DailyRecord]] = {}
 
 
@@ -48,37 +45,26 @@ def _safe_float(v) -> Optional[float]:
         return None
 
 
+# Convert json into Daily Record
 def _record_from_dict(obj: dict) -> DailyRecord:
-    """
-    Convert a JSON dict into a DailyRecord.
-    JSON keys should match DailyRecord field names.
-    """
     return DailyRecord(
         date=_parse_date(obj["date"]),
         recovery_value=_safe_float(obj.get("recovery_value")),
         sleep_duration=_safe_float(obj.get("sleep_duration")),
         sleep_consistency=_safe_float(obj.get("sleep_consistency")),
-        exercise_load=_safe_float(obj.get("exercise_load")),
-        nutrition_value=_safe_float(obj.get("nutrition_value")),
+        excercise_data_point=_safe_float(obj.get("excercise_data_point")),
+        nutrition_data_point=_safe_float(obj.get("nutrition_data_point")),
         sources=obj.get("sources"),
     )
 
 
 def load_user_records(user_id: str) -> List[DailyRecord]:
-    """
-    Load records for a user.
-
-    Priority:
-    1) In-memory override (if POST /ingest was called)
-    2) Seed file: data/seed_<user_id>.json
-    3) Fallback: data/seed_user1.json
-    """
     if user_id in _IN_MEMORY:
         return sorted(_IN_MEMORY[user_id], key=lambda r: r.date)
 
     data_dir = _data_dir()
     candidate = data_dir / f"seed_{user_id}.json"
-    fallback = data_dir / "seed_user1.json"
+    fallback = data_dir / "seed_sleep1.json"
 
     path = candidate if candidate.exists() else fallback
     if not path.exists():
@@ -110,10 +96,6 @@ def clear_user_records(user_id: str) -> None:
 
 
 def export_user_records_to_seed(user_id: str, filename: Optional[str] = None) -> Path:
-    """
-    Optional helper: write the current in-memory dataset to /data as a seed JSON file.
-    Useful if you want to persist a demo dataset.
-    """
     if user_id not in _IN_MEMORY:
         raise ValueError(f"No in-memory data for user_id={user_id}")
 
@@ -133,3 +115,4 @@ def export_user_records_to_seed(user_id: str, filename: Optional[str] = None) ->
         json.dump(payload, f, indent=2)
 
     return out_path
+

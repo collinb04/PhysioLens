@@ -17,20 +17,14 @@ Key design constraints:
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Dict, List, Optional, Tuple, Set
-
-from app.domain.models import DailyRecord
-from app.domain.constants import AnalysisAssumptions  # adjust import if needed
+from app.domain.daily_record import DailyRecord
+from app.domain.config import AnalysisAssumptions  # adjust import if needed
 from app.services.analytics.baselines import BaselineStats, z_score
 from app.services.analytics.dips import DipEvent, DipDetectionResult  # if you implemented Option A
 
-
-# ----------------------------
-# Public output structures
-# ----------------------------
 
 @dataclass(frozen=True)
 class FactorAttribution:
@@ -38,7 +32,7 @@ class FactorAttribution:
     percent: float
     raw_score: float
     occurrences: int  # number of dip-events where factor contributed
-    avg_abs_z: float  # rough strength summary (interpretation aid)
+    avg_abs_z: float  # rough strength summary 
 
 
 @dataclass(frozen=True)
@@ -48,10 +42,8 @@ class ParetoResult:
     meta: Dict[str, object]
 
 
-# ----------------------------
-# Internal configuration
-# ----------------------------
 
+# Internal configuration
 @dataclass(frozen=True)
 class FactorConfig:
     key: str
@@ -61,24 +53,17 @@ class FactorConfig:
 
 DEFAULT_DRIVERS: Tuple[FactorConfig, ...] = (
     FactorConfig(key="sleep", fields=("sleep_duration", "sleep_consistency")),
-    FactorConfig(key="exercise", fields=("exercise_load",)),
-    FactorConfig(key="nutrition", fields=("nutrition_value",)),
+    FactorConfig(key="exercise", fields=("excercise_data_point",)),
+    FactorConfig(key="nutrition", fields=("nutrition_data_point",)),
 )
 
-
+# Abnormal z-score threshold
 @dataclass(frozen=True)
 class AttributionThresholds:
-    """
-    Thresholds for defining "abnormal" input behavior.
-    These are relative to the person's baseline (z-score based).
-    """
-    abnormal_abs_z: float = 1.25  # conservative: flags meaningful deviations
+    abnormal_abs_z: float = 1.25  
 
 
-# ----------------------------
 # Helpers
-# ----------------------------
-
 def _index_records_by_date(records: List[DailyRecord]) -> Dict[date, DailyRecord]:
     return {r.date: r for r in records}
 
@@ -176,16 +161,9 @@ def _is_factor_abnormal(
 
 
 def _dip_weight(dip: DipEvent) -> float:
-    """
-    Weighting strategy:
-    - Large dips count more than persistent dips (more acute signal),
-      but persistent dips still matter through repeated days.
-
-    Keep weights modest; avoid overstating differences.
-    """
     if dip.kind == "large":
         return 1.25
-    return 1.0
+    return 1.0 # Persistent dip
 
 
 def _date_range(start: date, end: date) -> List[date]:
@@ -201,7 +179,7 @@ def _date_range(start: date, end: date) -> List[date]:
 def _count_consistent_windows(
     dip_dates: List[date],
     contributing_dates: Set[date],
-    window_days: int,
+    days_window: int,
 ) -> int:
     """
     Counts how many rolling windows contain at least one dip date where
@@ -212,13 +190,13 @@ def _count_consistent_windows(
     if not dip_dates:
         return 0
 
-    # Sort dip dates and create non-overlapping windows of size window_days
+    # Sort dip dates and create non-overlapping windows of size days_window
     dip_dates = sorted(dip_dates)
     windows = 0
     i = 0
     while i < len(dip_dates):
         w_start = dip_dates[i]
-        w_end = w_start + timedelta(days=window_days - 1)
+        w_end = w_start + timedelta(days=days_window - 1)
         # did the factor contribute to ANY dip in this window?
         hit = any((d in contributing_dates) for d in dip_dates[i:] if d <= w_end)
         if hit:
@@ -229,15 +207,12 @@ def _count_consistent_windows(
     return windows
 
 
-# ----------------------------
 # Main entry point
-# ----------------------------
-
 def compute_pareto_attribution(
     records: List[DailyRecord],
     dips_result: DipDetectionResult,
     baselines: Dict[str, BaselineStats],
-    assumptions: AnalysisAssumptions,
+    constants: AnalysisAssumptions,
     factors: Tuple[FactorConfig, ...] = DEFAULT_DRIVERS,
     thresholds: AttributionThresholds = AttributionThresholds(),
 ) -> ParetoResult:
@@ -247,10 +222,10 @@ def compute_pareto_attribution(
     - dominant_key if strong enough, else None
 
     Required baselines keys:
-      "sleep_duration", "sleep_consistency", "exercise_load", "nutrition_value"
+      "sleep_duration", "sleep_consistency", "excercise_data_point", "nutrition_data_point"
     """
     # Gate on minimum history (don’t hallucinate signal)
-    if len(records) < assumptions.min_history_days:
+    if len(records) < constants.min_history_days:
         return ParetoResult(
             factors_ranked=[],
             dominant_key=None,
@@ -270,7 +245,7 @@ def compute_pareto_attribution(
     # Build the set of "dip context dates" (dip day + prior lag days)
     dip_context_dates: Set[date] = set()
     for dip in all_dips:
-        for lag in range(0, assumptions.max_lag_days + 1):
+        for lag in range(0, constants.max_lag_days + 1):
             dip_context_dates.add(dip.date - timedelta(days=lag))
 
     # Score accumulators
@@ -289,7 +264,7 @@ def compute_pareto_attribution(
             best_strength = 0.0
             contributed = False
 
-            for lag in range(0, assumptions.max_lag_days + 1):
+            for lag in range(0, constants.max_lag_days + 1):
                 day = dip.date - timedelta(days=lag)
                 rec = rec_by_date.get(day)
                 if rec is None:
@@ -318,7 +293,7 @@ def compute_pareto_attribution(
             meta={
                 "reason": "no_explanatory_signal",
                 "dip_count": len(all_dips),
-                "max_lag_days": assumptions.max_lag_days,
+                "max_lag_days": constants.max_lag_days,
             },
         )
 
@@ -344,9 +319,9 @@ def compute_pareto_attribution(
         noise = tot - abnormal_in_context[factor.key]
         noise_ratio = noise / tot  # 0..1
         # If noise_ratio exceeds max_noise_ratio, reduce score proportionally
-        if noise_ratio > assumptions.max_noise_ratio:
+        if noise_ratio > constants.max_noise_ratio:
             # penalty factor goes from 1 -> 0 as noise_ratio goes from max_noise_ratio -> 1
-            excess = min(1.0, (noise_ratio - assumptions.max_noise_ratio) / (1.0 - assumptions.max_noise_ratio))
+            excess = min(1.0, (noise_ratio - constants.max_noise_ratio) / (1.0 - constants.max_noise_ratio))
             penalty = 1.0 - excess
             raw_scores[factor.key] *= penalty
 
@@ -359,7 +334,7 @@ def compute_pareto_attribution(
             meta={
                 "reason": "all_penalized_as_noise",
                 "dip_count": len(all_dips),
-                "max_lag_days": assumptions.max_lag_days,
+                "max_lag_days": constants.max_lag_days,
             },
         )
 
@@ -370,9 +345,9 @@ def compute_pareto_attribution(
         w = _count_consistent_windows(
             dip_dates=dip_dates_sorted,
             contributing_dates=contributed_to_dip_dates[factor.key],
-            window_days=assumptions.baseline_window_days,
+            days_window=constants.baseline_days_window,
         )
-        if w >= assumptions.min_consistent_windows:
+        if w >= constants.min_consistent_windows:
             consistent_ok.add(factor.key)
         else:
             # If not consistent, you can either drop it or keep with heavy downweight.
@@ -403,21 +378,21 @@ def compute_pareto_attribution(
         )
 
     # Enforce output constraint: top K
-    factors_ranked = factors_ranked[: assumptions.max_explanatory_factors]
+    factors_ranked = factors_ranked[: constants.max_explanatory_factors]
 
     # Determine dominant factor (effect size threshold)
     dominant_key: Optional[str] = None
     if factors_ranked:
         top = factors_ranked[0]
-        if (top.percent / 100.0) >= assumptions.min_effect_size:
+        if (top.percent / 100.0) >= constants.min_effect_size:
             dominant_key = top.key
 
     meta = {
         "dip_count": len(all_dips),
         "large_dip_count": len(dips_result.large),
         "persistent_dip_count": len(dips_result.persistent),
-        "max_lag_days": assumptions.max_lag_days,
-        "baseline_window_days": assumptions.baseline_window_days,
+        "max_lag_days": constants.max_lag_days,
+        "baseline_days_window": constants.baseline_days_window,
         "abnormal_abs_z": thresholds.abnormal_abs_z,
         "consistent_factors": sorted(list(consistent_ok)),
     }

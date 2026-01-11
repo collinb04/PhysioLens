@@ -10,8 +10,6 @@ This file glues together:
 - pareto attribution
 - insight creation
 - evidence timeseries
-
-Routes should call THIS, not re-implement logic.
 """
 
 from __future__ import annotations
@@ -19,25 +17,21 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Dict, List, Optional
 
-from app.domain.constants import AnalysisAssumptions
-from app.domain.models import DailyRecord
+from app.domain.config import AnalysisAssumptions
+from app.domain.daily_record import DailyRecord
 from app.services.analytics.baselines import compute_individual_baselines, compute_cumulative_baselines
 from app.services.analytics.dips import detect_recovery_dips, DipThresholds, DipDetectionResult
 from app.services.analytics.pareto_calculation import compute_pareto_attribution, AttributionThresholds, ParetoResult
 from app.services.analytics.stability import is_stable_recovery, StabilityResult
 from app.services.analytics.insights import build_insight, extract_latest_values, Insight
 from app.services.analytics.evidence import build_timeseries
-
-# You should implement this in app/services/ingest/store.py
-# For now, pipeline expects you have:
-#   load_user_records(user_id: str) -> List[DailyRecord]
-from app.services.ingest.store import load_user_records  # adjust if needed
+from app.services.ingest.store import load_user_records  
 
 
 def run_pipeline(
     user_id: str,
-    assumptions: AnalysisAssumptions = AnalysisAssumptions(),
-    window_days: Optional[int] = None,
+    constants: AnalysisAssumptions = AnalysisAssumptions(),
+    days_window: Optional[int] = None,
     dip_thresholds: DipThresholds = DipThresholds(),
     abnormal_thresholds: AttributionThresholds = AttributionThresholds(),
 ) -> Dict:
@@ -47,41 +41,34 @@ def run_pipeline(
       - timeseries: daily evidence series
       - debug: optional internal details (safe to omit in production)
 
-    window_days defaults to assumptions.min_history_days if not provided.
+    days_window defaults to constants.min_history_days if not provided.
     """
-    if window_days is None:
-        window_days = assumptions.min_history_days
+    if days_window is None:
+        days_window = constants.min_history_days
 
-    # 1) Load + sort records
     records: List[DailyRecord] = load_user_records(user_id)
     records = sorted(records, key=lambda r: r.date)
 
-    # 2) Window the data for analysis (last N days)
-    if len(records) > window_days:
-        records_w = records[-window_days:]
+    # Window the data for analysis
+    if len(records) > days_window:
+        records_w = records[-days_window:]
     else:
         records_w = records
 
-    # 3) Compute baselines (inputs + recovery) using ONE consistent method
     baselines = compute_cumulative_baselines(
         records=records_w,
-        window_days=assumptions.baseline_window_days,  # or assumptions.correlation_window_days if that's your field
+        days_window=constants.baseline_days_window,  
     )
 
     recovery_baseline = baselines["recovery_value"]
 
-
-    # 4) Detect dips (recovery-only)
     dips_all = detect_recovery_dips(
         records=records_w,
         recovery_baseline=recovery_baseline,
-        assumptions=assumptions,
+        constants=constants,
         thresholds=dip_thresholds,
     )
 
-    # If your detect_recovery_dips currently returns List[DipEvent],
-    # you should adapt it to DipDetectionResult (recommended).
-    # If you already updated dips.py to return DipDetectionResult, this will be unnecessary.
     if isinstance(dips_all, list):
         # Back-compat adapter: split by kind (large vs persistent) and dedupe into all
         large = [d for d in dips_all if d.kind == "large"]
@@ -96,24 +83,24 @@ def run_pipeline(
     else:
         dips_result = dips_all  # type: ignore
 
-    # 5) Stability evaluation (based on recovery baseline + dip count)
+    # Stability evaluation 
     stability: StabilityResult = is_stable_recovery(
         records=records_w,
         recovery_baseline=recovery_baseline,
         dip_count=len(dips_result.all),
-        assumptions=assumptions,
+        constants=constants,
     )
 
-    # 6) Pareto attribution (only meaningful if not stable; still safe to run either way)
+    # Pareto attribution (only meaningful if not stable; still safe to run either way)
     pareto: ParetoResult = compute_pareto_attribution(
         records=records_w,
         dips_result=dips_result,
         baselines=baselines,
-        assumptions=assumptions,
+        constants=constants,
         thresholds=abnormal_thresholds,
     )
 
-    # 7) Insight generation (actionable = leverage + current state + stability)
+    # Insight generation
     latest_values = extract_latest_values(records_w)
     insight: Insight = build_insight(
         pareto=pareto,
@@ -121,11 +108,11 @@ def run_pipeline(
         recovery_stable=stability.stable,
         baselines=baselines,
         latest_values=latest_values,
-        assumptions=assumptions,
-        resources_by_factor=None,  # add later if you implement curated resources
+        constants=constants,
+        resources_by_factor=None, 
     )
 
-    # 8) Evidence timeseries for UI
+    # Evidence timeseries for UI
     timeseries = build_timeseries(
         records=records_w,
         dips_result=dips_result,
@@ -136,7 +123,7 @@ def run_pipeline(
 
     summary = {
         "user_id": user_id,
-        "window_days": window_days,
+        "days_window": days_window,
         "stable": stability.stable,
         "factors": [
             {"key": d.key, "percent": d.percent, "occurrences": d.occurrences, "avg_abs_z": d.avg_abs_z}

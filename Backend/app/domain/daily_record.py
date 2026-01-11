@@ -16,8 +16,8 @@ class DailyRecord:
     # Explanatory Inputs
     sleep_duration: Optional[float] = None
     sleep_consistency: Optional[float] = None 
-    exercise_load: Optional[int] = None #Assigned range: amount of calories expensed in an excerise context
-    nutrition_value: Optional[int] = None 
+    excercise_data_point: Optional[int] = None 
+    nutrition_data_point: Optional[int] = None 
 
     # Metadata
     sources: Optional[Dict[str, str]] = None

@@ -1,6 +1,4 @@
-# app/api/schemas.py
 from __future__ import annotations
-
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
@@ -19,13 +17,13 @@ class InsightOut(BaseModel):
     primary_percent: Optional[float] = None
     current_state: Optional[Dict[str, str]] = None
     stability: Optional[Dict[str, str]] = None
-    confidence: str = "low"
+    signal_strength: str = "low"
     resources: Optional[Dict[str, List[Dict[str, str]]]] = None
 
 
 class SummaryOut(BaseModel):
     user_id: str
-    window_days: int
+    days_window: int
     stable: bool
     factors: List[FactorOut] = Field(default_factory=list)
     dominant_key: Optional[str] = None
@@ -38,8 +36,8 @@ class TimeseriesDayOut(BaseModel):
     recovery_value: Optional[float] = None
     sleep_duration: Optional[float] = None
     sleep_consistency: Optional[float] = None
-    exercise_load: Optional[float] = None
-    nutrition_value: Optional[float] = None
+    excercise_data_point: Optional[float] = None
+    nutrition_data_point: Optional[float] = None
 
     is_dip: bool
     dip_kind: str
@@ -50,5 +48,5 @@ class TimeseriesDayOut(BaseModel):
 
 class TimeseriesOut(BaseModel):
     user_id: str
-    window_days: int
+    days_window: int
     days: List[TimeseriesDayOut]

@@ -2,22 +2,19 @@
 """
 Insight generation.
 
-This module converts analysis outputs (Pareto attribution + baselines + stability)
+This module converts analysis outputs
 into concise, actionable (but non-prescriptive) insights.
 
 Design goals:
 - Actionable == clarifies what to focus on (leverage) + current state + stability
 - Avoid prescriptions, targets, diagnoses, or causal claims
-- Template-based language (no LLM / free-form generation)
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Dict, Optional, Tuple, List
-
-from app.domain.models import DailyRecord
-from app.domain.constants import AnalysisAssumptions  # adjust import path if needed
+from app.domain.daily_record import DailyRecord
+from app.domain.config import AnalysisAssumptions 
 from app.services.analytics.baselines import BaselineStats
 from app.services.analytics.pareto_calculation import ParetoResult, FactorAttribution, DEFAULT_DRIVERS, AttributionThresholds
 from app.services.analytics.dips import DipDetectionResult
@@ -25,26 +22,17 @@ from app.services.analytics.dips import DipDetectionResult
 
 @dataclass(frozen=True)
 class Insight:
-    """
-    UI-ready insight payload.
-    Keep this small, stable, and easy to render.
-    """
     title: str
     body: str
-    # Optional structured fields to support UI without parsing text
     primary_factor: Optional[str] = None
     primary_percent: Optional[float] = None
     current_state: Optional[Dict[str, str]] = None  # e.g. {"sleep": "below_normal"}
     stability: Optional[Dict[str, str]] = None      # e.g. {"sleep": "volatile"}
-    confidence: str = "low"                         # "low" | "medium" | "high"
+    signal_strength: str = "low"                         # "low" | "medium" | "high"
     resources: Optional[Dict[str, List[Dict[str, str]]]] = None  # optional
 
 
 def _band_from_z(z: Optional[float]) -> str:
-    """
-    Converts a z-score into a simple state label.
-    We intentionally avoid absolute targets; this is person-relative.
-    """
     if z is None:
         return "unknown"
     if z <= -0.75:
@@ -55,11 +43,6 @@ def _band_from_z(z: Optional[float]) -> str:
 
 
 def _stability_from_std(b: BaselineStats) -> str:
-    """
-    Simple stability label for a metric:
-    - If std is large relative to mean scale, it is more volatile.
-    We keep this conservative and interpretable.
-    """
     if b.mean is None or b.std is None or b.n == 0:
         return "unknown"
     # If mean is near 0, std/mean isn't meaningful; fall back to absolute std
@@ -73,10 +56,6 @@ def _stability_from_std(b: BaselineStats) -> str:
 
 
 def _factor_fields(factor_key: str) -> Tuple[str, ...]:
-    """
-    Map factor category to its fields for summarizing state/stability.
-    Must match pareto.py DEFAULT_DRIVERS categories.
-    """
     for d in DEFAULT_DRIVERS:
         if d.key == factor_key:
             return d.fields
@@ -142,23 +121,18 @@ def _factor_state_and_stability(
     return (state, stability)
 
 
-def _confidence_label(
+def _signal_strength_label(
     pareto: ParetoResult,
     dips_result: DipDetectionResult,
-    assumptions: AnalysisAssumptions,
+    constants: AnalysisAssumptions,
 ) -> str:
-    """
-    Simple, explainable confidence heuristic.
-    Not statistical certainty—just a UI-level trust indicator.
-    """
     dip_count = len(dips_result.all)
     large_count = len(dips_result.large)
 
     if pareto.dominant_key is None:
         return "low"
 
-    # Stronger if more dips, and at least some are large dips
-    if dip_count >= max(assumptions.min_observations, 10) and large_count >= 2:
+    if dip_count >= max(constants.min_observations, 10) and large_count >= 2:
         return "high"
 
     if dip_count >= 5:
@@ -173,7 +147,7 @@ def build_insight(
     recovery_stable: bool,
     baselines: Dict[str, BaselineStats],
     latest_values: Dict[str, Optional[float]],
-    assumptions: AnalysisAssumptions,
+    constants: AnalysisAssumptions,
     resources_by_factor: Optional[Dict[str, List[Dict[str, str]]]] = None,
 ) -> Insight:
     """
@@ -187,7 +161,6 @@ def build_insight(
     - latest_values: current day's metric values (or most recent available)
     - resources_by_factor: optional curated resources to surface by dominant factor
     """
-    # 1) Stable recovery: valid "success" state
     if recovery_stable:
         body = (
             "Recovery has been relatively stable over the selected window. "
@@ -196,10 +169,10 @@ def build_insight(
         return Insight(
             title="Recovery is stable",
             body=body,
-            confidence="high",
+            signal_strength="high",
         )
 
-    # 2) No dips or insufficient signal
+    # No dips/insufficient signal
     if len(dips_result.all) == 0 or not pareto.factors_ranked:
         reason = pareto.meta.get("reason") if isinstance(pareto.meta, dict) else None
         if reason == "insufficient_history":
@@ -218,26 +191,23 @@ def build_insight(
         return Insight(
             title="No dominant recovery factor detected",
             body=body,
-            confidence="low",
+            signal_strength="low",
         )
 
-    # 3) Dominant factor insight (actionable via leverage + state + stability)
+    # Dominant factor insight
     dominant = pareto.dominant_key
     top: FactorAttribution = pareto.factors_ranked[0]
 
-    # Even if dominant_key wasn't set, we can still present the top factor as "most explanatory"
     primary_factor = dominant if dominant is not None else top.key
     primary_percent = float(top.percent)
 
     state, stability = _factor_state_and_stability(primary_factor, baselines, latest_values)
 
-    # Optional: include runner-up in phrasing (“not Y”) when available
     runner_up = pareto.factors_ranked[1].key if len(pareto.factors_ranked) > 1 else None
 
-    # Title should be instantly scannable
-    title = f"Primary recovery-associated factor: {primary_factor.capitalize()}"
+    title = f"Primary dip-associated factor: {primary_factor.capitalize()}"
 
-    # Body: leverage + current state + stability. No prescriptions.
+    # Body
     parts: List[str] = []
     parts.append(
         f"{primary_factor.capitalize()} explains the largest share of recovery dips in this window ({primary_percent:.0f}%)."
@@ -245,7 +215,7 @@ def build_insight(
     if runner_up:
         parts.append(f"For you, recovery appears more sensitive to {primary_factor} than to {runner_up}.")
 
-    # State/stability messaging (actionable)
+    # State/stability messaging 
     if state != "unknown":
         state_phrase = {
             "below_normal": "below your normal range",
@@ -264,7 +234,7 @@ def build_insight(
 
     body = " ".join(parts)
 
-    confidence = _confidence_label(pareto, dips_result, assumptions)
+    signal_strength = _signal_strength_label(pareto, dips_result, constants)
 
     insight = Insight(
         title=title,
@@ -273,10 +243,9 @@ def build_insight(
         primary_percent=primary_percent,
         current_state={primary_factor: state},
         stability={primary_factor: stability},
-        confidence=confidence,
+        signal_strength=signal_strength,
     )
 
-    # Optional curated resources (education, not advice)
     if resources_by_factor and primary_factor in resources_by_factor:
         insight = Insight(
             **{**insight.__dict__, "resources": {primary_factor: resources_by_factor[primary_factor]}}
@@ -295,8 +264,8 @@ def extract_latest_values(records: List[DailyRecord]) -> Dict[str, Optional[floa
     keys = [
         "sleep_duration",
         "sleep_consistency",
-        "exercise_load",
-        "nutrition_value",
+        "excercise_data_point",
+        "nutrition_data_point",
         "recovery_value",
     ]
     latest: Dict[str, Optional[float]] = {k: None for k in keys}

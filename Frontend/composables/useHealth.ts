@@ -12,13 +12,13 @@ export type Insight = {
   primary_percent?: number | null
   current_state?: Record<string, string> | null
   stability?: Record<string, string> | null
-  confidence: 'low' | 'medium' | 'high'
+  signal_strength: 'low' | 'medium' | 'high'
   resources?: Record<string, Array<Record<string, string>>> | null
 }
 
 export type Summary = {
   user_id: string
-  window_days: number
+  days_window: number
   stable: boolean
   factors: Factor[]
   dominant_key?: string | null
@@ -31,8 +31,8 @@ export type TimeseriesDay = {
   recovery_value: number | null
   sleep_duration: number | null
   sleep_consistency: number | null
-  exercise_load: number | null
-  nutrition_value: number | null
+  excercise_data_point: number | null
+  nutrition_data_point: number | null
   is_dip: boolean
   dip_kind: 'none' | 'large' | 'persistent'
   factor_abnormal: Record<string, boolean>
@@ -41,7 +41,7 @@ export type TimeseriesDay = {
 
 export type Timeseries = {
   user_id: string
-  window_days: number
+  days_window: number
   days: TimeseriesDay[]
 }
 
@@ -51,13 +51,13 @@ export function useHealthApi() {
 
   const getSummary = async (userId: string, windowDays: number): Promise<Summary> => {
     return await $fetch<Summary>(`${apiBase}/health/summary`, {
-      query: { user_id: userId, window_days: windowDays }
+      query: { user_id: userId, days_window: windowDays }
     })
   }
 
   const getTimeseries = async (userId: string, windowDays: number): Promise<Timeseries> => {
     return await $fetch<Timeseries>(`${apiBase}/health/timeseries`, {
-      query: { user_id: userId, window_days: windowDays }
+      query: { user_id: userId, days_window: windowDays }
     })
   }
 

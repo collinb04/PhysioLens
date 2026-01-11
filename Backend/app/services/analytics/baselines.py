@@ -1,10 +1,9 @@
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from math import sqrt
 
-from app.domain.models import DailyRecord
+from app.domain.daily_record import DailyRecord
 
 
 @dataclass(frozen=True)
@@ -34,31 +33,31 @@ def _get_metric_value(r: DailyRecord, key: str) -> Optional[float]:
         return r.sleep_duration
     if key == "sleep_consistency":
         return r.sleep_consistency
-    if key == "exercise_load":
-        return r.exercise_load
-    if key == "nutrition_value":
-        return r.nutrition_value
+    if key == "excercise_data_point":
+        return r.excercise_data_point
+    if key == "nutrition_data_point":
+        return r.nutrition_data_point
     raise ValueError(f"Unknown metric key: {key}")
 
 
 def compute_individual_baselines(
     records: List[DailyRecord],
     metric_key: str,
-    window_days: int,
+    days_window: int,
 ) -> BaselineStats:
     """
-    Compute baseline stats (mean/std) for a metric over the last `window_days`
+    Compute baseline stats (mean/std) for a metric over the last `days_window`
     worth of records in the provided list.
 
     Assumptions:
-    - `records` contains one item per day (or close enough).
+    - `records` contains one item per day.
     - `records` may contain None values for missing metrics; these are ignored.
-    - We treat the *last* `window_days` entries as the window.
+    - We treat the *last* `days_window` entries as the window.
     """
-    if window_days <= 0:
-        raise ValueError("window_days must be > 0")
+    if days_window <= 0:
+        raise ValueError("days_window must be > 0")
 
-    window = records[-window_days:] if len(records) >= window_days else records
+    window = records[-days_window:] if len(records) >= days_window else records
     xs: List[float] = []
     for r in window:
         v = _get_metric_value(r, metric_key)
@@ -76,7 +75,7 @@ def compute_individual_baselines(
 
 def compute_cumulative_baselines(
     records: List[DailyRecord],
-    window_days: int,
+    days_window: int,
     metric_keys: Optional[List[str]] = None,
     ) -> Dict[str, BaselineStats]:
     """
@@ -88,13 +87,13 @@ def compute_cumulative_baselines(
             "recovery_value",
             "sleep_duration",
             "sleep_consistency",
-            "exercise_load",
-            "nutrition_value",
+            "excercise_data_point",
+            "nutrition_data_point",
         ]
 
     baselines: Dict[str, BaselineStats] = {}
     for key in metric_keys:
-        baselines[key] = compute_individual_baselines(records, key, window_days)
+        baselines[key] = compute_individual_baselines(records, key, days_window)
     return baselines
 
 

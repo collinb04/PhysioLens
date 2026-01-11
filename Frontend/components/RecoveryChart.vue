@@ -12,13 +12,11 @@
       preserveAspectRatio="none"
     >
       <defs>
-        <!-- Gradient for area fill -->
         <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#000000" stop-opacity="0.08" />
           <stop offset="100%" stop-color="#000000" stop-opacity="0" />
         </linearGradient>
         
-        <!-- Drop shadow for line -->
         <filter id="lineShadow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
           <feOffset dx="0" dy="1" result="offsetblur"/>
@@ -38,7 +36,6 @@
         <line v-for="y in 6" :key="'hy'+y" x1="0" :y1="y*43.33" x2="1000" :y2="y*43.33" />
       </g>
 
-      <!-- Area fill under line -->
       <path 
         :d="areaD" 
         fill="url(#areaGradient)" 
@@ -208,7 +205,3 @@ const areaD = computed(() => {
   return `${linePath} L ${lastPoint.x.toFixed(2)} 260 L ${firstPoint.x.toFixed(2)} 260 Z`
 })
 </script>
-
-<style scoped>
-/* No custom animations needed */
-</style>

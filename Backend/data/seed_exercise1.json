@@ -4,479 +4,479 @@
     "recovery_value": 80.45763695115859,
     "sleep_duration": 7.23,
     "sleep_consistency": 0.859,
-    "exercise_load": 469.2,
-    "nutrition_value": 2229.0
+    "excercise_data_point": 469.2,
+    "nutrition_data_point": 2229.0
   },
   {
     "date": "2025-11-13",
     "recovery_value": 80.73033106805343,
     "sleep_duration": 7.58,
     "sleep_consistency": 0.864,
-    "exercise_load": 427.0,
-    "nutrition_value": 2248.0
+    "excercise_data_point": 427.0,
+    "nutrition_data_point": 2248.0
   },
   {
     "date": "2025-11-14",
     "recovery_value": 83.5285034181462,
     "sleep_duration": 7.81,
     "sleep_consistency": 0.864,
-    "exercise_load": 558.9,
-    "nutrition_value": 2326.0
+    "excercise_data_point": 558.9,
+    "nutrition_data_point": 2326.0
   },
   {
     "date": "2025-11-15",
     "recovery_value": 79.43994831132454,
     "sleep_duration": 7.52,
     "sleep_consistency": 0.969,
-    "exercise_load": 452.9,
-    "nutrition_value": 1998.0
+    "excercise_data_point": 452.9,
+    "nutrition_data_point": 1998.0
   },
   {
     "date": "2025-11-16",
     "recovery_value": 80.81725519283158,
     "sleep_duration": 7.63,
     "sleep_consistency": 0.847,
-    "exercise_load": 496.3,
-    "nutrition_value": 1988.0
+    "excercise_data_point": 496.3,
+    "nutrition_data_point": 1988.0
   },
   {
     "date": "2025-11-17",
     "recovery_value": 82.11163299101699,
     "sleep_duration": 7.81,
     "sleep_consistency": 0.895,
-    "exercise_load": 392.6,
-    "nutrition_value": 2088.0
+    "excercise_data_point": 392.6,
+    "nutrition_data_point": 2088.0
   },
   {
     "date": "2025-11-18",
     "recovery_value": 76.76164828382021,
     "sleep_duration": 7.17,
     "sleep_consistency": 0.831,
-    "exercise_load": 500.1,
-    "nutrition_value": 1785.0
+    "excercise_data_point": 500.1,
+    "nutrition_data_point": 1785.0
   },
   {
     "date": "2025-11-19",
     "recovery_value": 79.82285843006488,
     "sleep_duration": 7.66,
     "sleep_consistency": 0.98,
-    "exercise_load": 550.5,
-    "nutrition_value": 2041.0
+    "excercise_data_point": 550.5,
+    "nutrition_data_point": 2041.0
   },
   {
     "date": "2025-11-20",
     "recovery_value": 77.39776822829815,
     "sleep_duration": 7.51,
     "sleep_consistency": 0.873,
-    "exercise_load": 764.6,
-    "nutrition_value": 2033.0
+    "excercise_data_point": 764.6,
+    "nutrition_data_point": 2033.0
   },
   {
     "date": "2025-11-21",
     "recovery_value": 81.87793045765544,
     "sleep_duration": 7.03,
     "sleep_consistency": 0.922,
-    "exercise_load": 498.4,
-    "nutrition_value": 2053.0
+    "excercise_data_point": 498.4,
+    "nutrition_data_point": 2053.0
   },
   {
     "date": "2025-11-22",
     "recovery_value": 81.65415105207195,
     "sleep_duration": 8.24,
     "sleep_consistency": 0.702,
-    "exercise_load": 481.3,
-    "nutrition_value": 2145.0
+    "excercise_data_point": 481.3,
+    "nutrition_data_point": 2145.0
   },
   {
     "date": "2025-11-23",
     "recovery_value": 78.03955264840091,
     "sleep_duration": 7.24,
     "sleep_consistency": 0.777,
-    "exercise_load": 525.4,
-    "nutrition_value": 2040.0
+    "excercise_data_point": 525.4,
+    "nutrition_data_point": 2040.0
   },
   {
     "date": "2025-11-24",
     "recovery_value": 81.42200488261952,
     "sleep_duration": 8.27,
     "sleep_consistency": 0.841,
-    "exercise_load": 500.6,
-    "nutrition_value": 1960.0
+    "excercise_data_point": 500.6,
+    "nutrition_data_point": 1960.0
   },
   {
     "date": "2025-11-25",
     "recovery_value": 81.3356478271976,
     "sleep_duration": 8.1,
     "sleep_consistency": 0.873,
-    "exercise_load": 569.0,
-    "nutrition_value": 2151.0
+    "excercise_data_point": 569.0,
+    "nutrition_data_point": 2151.0
   },
   {
     "date": "2025-11-26",
     "recovery_value": 79.39040073170153,
     "sleep_duration": 7.66,
     "sleep_consistency": 0.837,
-    "exercise_load": 481.5,
-    "nutrition_value": 1955.0
+    "excercise_data_point": 481.5,
+    "nutrition_data_point": 1955.0
   },
   {
     "date": "2025-11-27",
     "recovery_value": 79.42869228740986,
     "sleep_duration": 7.42,
     "sleep_consistency": 0.857,
-    "exercise_load": 658.4,
-    "nutrition_value": 1991.0
+    "excercise_data_point": 658.4,
+    "nutrition_data_point": 1991.0
   },
   {
     "date": "2025-11-28",
     "recovery_value": 80.93173529361717,
     "sleep_duration": 7.36,
     "sleep_consistency": 0.866,
-    "exercise_load": 814.5,
-    "nutrition_value": 1968.0
+    "excercise_data_point": 814.5,
+    "nutrition_data_point": 1968.0
   },
   {
     "date": "2025-11-29",
     "recovery_value": 81.65674091161404,
     "sleep_duration": 8.13,
     "sleep_consistency": 0.849,
-    "exercise_load": 507.6,
-    "nutrition_value": 2185.0
+    "excercise_data_point": 507.6,
+    "nutrition_data_point": 2185.0
   },
   {
     "date": "2025-11-30",
     "recovery_value": 82.85313418674714,
     "sleep_duration": 7.57,
     "sleep_consistency": 0.859,
-    "exercise_load": 542.6,
-    "nutrition_value": 2251.0
+    "excercise_data_point": 542.6,
+    "nutrition_data_point": 2251.0
   },
   {
     "date": "2025-12-01",
     "recovery_value": 81.56444940368395,
     "sleep_duration": 8.01,
     "sleep_consistency": 0.802,
-    "exercise_load": 566.7,
-    "nutrition_value": 2193.0
+    "excercise_data_point": 566.7,
+    "nutrition_data_point": 2193.0
   },
   {
     "date": "2025-12-02",
     "recovery_value": 82.430511053785,
     "sleep_duration": 7.06,
     "sleep_consistency": 0.795,
-    "exercise_load": 531.7,
-    "nutrition_value": 2093.0
+    "excercise_data_point": 531.7,
+    "nutrition_data_point": 2093.0
   },
   {
     "date": "2025-12-03",
     "recovery_value": 78.4709792935636,
     "sleep_duration": 7.3,
     "sleep_consistency": 0.84,
-    "exercise_load": 490.5,
-    "nutrition_value": 2167.0
+    "excercise_data_point": 490.5,
+    "nutrition_data_point": 2167.0
   },
   {
     "date": "2025-12-04",
     "recovery_value": 82.93853301081478,
     "sleep_duration": 7.84,
     "sleep_consistency": 0.956,
-    "exercise_load": 445.0,
-    "nutrition_value": 2231.0
+    "excercise_data_point": 445.0,
+    "nutrition_data_point": 2231.0
   },
   {
     "date": "2025-12-05",
     "recovery_value": 75.31630283027357,
     "sleep_duration": 7.67,
     "sleep_consistency": 0.964,
-    "exercise_load": 830.1,
-    "nutrition_value": 1746.0
+    "excercise_data_point": 830.1,
+    "nutrition_data_point": 1746.0
   },
   {
     "date": "2025-12-06",
     "recovery_value": 83.80502131681354,
     "sleep_duration": 7.46,
     "sleep_consistency": 0.876,
-    "exercise_load": 539.2,
-    "nutrition_value": 2306.0
+    "excercise_data_point": 539.2,
+    "nutrition_data_point": 2306.0
   },
   {
     "date": "2025-12-07",
     "recovery_value": 79.62343492289273,
     "sleep_duration": 7.05,
     "sleep_consistency": 0.804,
-    "exercise_load": 468.0,
-    "nutrition_value": 1940.0
+    "excercise_data_point": 468.0,
+    "nutrition_data_point": 1940.0
   },
   {
     "date": "2025-12-08",
     "recovery_value": 81.3617199058021,
     "sleep_duration": 7.5,
     "sleep_consistency": 0.879,
-    "exercise_load": 480.0,
-    "nutrition_value": 2065.0
+    "excercise_data_point": 480.0,
+    "nutrition_data_point": 2065.0
   },
   {
     "date": "2025-12-09",
     "recovery_value": 78.58695482823028,
     "sleep_duration": 7.73,
     "sleep_consistency": 0.883,
-    "exercise_load": 486.0,
-    "nutrition_value": 1964.0
+    "excercise_data_point": 486.0,
+    "nutrition_data_point": 1964.0
   },
   {
     "date": "2025-12-10",
     "recovery_value": 79.77053473456412,
     "sleep_duration": 8.08,
     "sleep_consistency": 0.913,
-    "exercise_load": 471.3,
-    "nutrition_value": 2018.0
+    "excercise_data_point": 471.3,
+    "nutrition_data_point": 2018.0
   },
   {
     "date": "2025-12-11",
     "recovery_value": 83.84840891479413,
     "sleep_duration": 7.65,
     "sleep_consistency": 0.85,
-    "exercise_load": 514.8,
-    "nutrition_value": 2443.0
+    "excercise_data_point": 514.8,
+    "nutrition_data_point": 2443.0
   },
   {
     "date": "2025-12-12",
     "recovery_value": 80.61913084643326,
     "sleep_duration": 6.87,
     "sleep_consistency": 0.91,
-    "exercise_load": 403.4,
-    "nutrition_value": 2084.0
+    "excercise_data_point": 403.4,
+    "nutrition_data_point": 2084.0
   },
   {
     "date": "2025-12-13",
     "recovery_value": 78.55489168872222,
     "sleep_duration": 7.12,
     "sleep_consistency": 0.98,
-    "exercise_load": 752.1,
-    "nutrition_value": 2251.0
+    "excercise_data_point": 752.1,
+    "nutrition_data_point": 2251.0
   },
   {
     "date": "2025-12-14",
     "recovery_value": 80.17981042355083,
     "sleep_duration": 7.45,
     "sleep_consistency": 0.755,
-    "exercise_load": 471.6,
-    "nutrition_value": 2194.0
+    "excercise_data_point": 471.6,
+    "nutrition_data_point": 2194.0
   },
   {
     "date": "2025-12-15",
     "recovery_value": 76.38482376908317,
     "sleep_duration": 7.01,
     "sleep_consistency": 0.876,
-    "exercise_load": 530.2,
-    "nutrition_value": 1915.0
+    "excercise_data_point": 530.2,
+    "nutrition_data_point": 1915.0
   },
   {
     "date": "2025-12-16",
     "recovery_value": 77.72814475155229,
     "sleep_duration": 7.22,
     "sleep_consistency": 0.809,
-    "exercise_load": 553.4,
-    "nutrition_value": 1874.0
+    "excercise_data_point": 553.4,
+    "nutrition_data_point": 1874.0
   },
   {
     "date": "2025-12-17",
     "recovery_value": 73.59899500131476,
     "sleep_duration": 7.52,
     "sleep_consistency": 0.739,
-    "exercise_load": 570.5,
-    "nutrition_value": 1612.0
+    "excercise_data_point": 570.5,
+    "nutrition_data_point": 1612.0
   },
   {
     "date": "2025-12-18",
     "recovery_value": 79.39878731408841,
     "sleep_duration": 7.23,
     "sleep_consistency": 0.893,
-    "exercise_load": 468.5,
-    "nutrition_value": 1881.0
+    "excercise_data_point": 468.5,
+    "nutrition_data_point": 1881.0
   },
   {
     "date": "2025-12-19",
     "recovery_value": 79.03743013111762,
     "sleep_duration": 7.49,
     "sleep_consistency": 0.84,
-    "exercise_load": 444.7,
-    "nutrition_value": 2006.0
+    "excercise_data_point": 444.7,
+    "nutrition_data_point": 2006.0
   },
   {
     "date": "2025-12-20",
     "recovery_value": 73.14961544729807,
     "sleep_duration": 7.66,
     "sleep_consistency": 0.917,
-    "exercise_load": 790.4,
-    "nutrition_value": 1491.0
+    "excercise_data_point": 790.4,
+    "nutrition_data_point": 1491.0
   },
   {
     "date": "2025-12-21",
     "recovery_value": 80.80153136310706,
     "sleep_duration": 7.51,
     "sleep_consistency": 0.81,
-    "exercise_load": 614.1,
-    "nutrition_value": 2239.0
+    "excercise_data_point": 614.1,
+    "nutrition_data_point": 2239.0
   },
   {
     "date": "2025-12-22",
     "recovery_value": 79.02355630955056,
     "sleep_duration": 7.33,
     "sleep_consistency": 0.875,
-    "exercise_load": 479.9,
-    "nutrition_value": 1949.0
+    "excercise_data_point": 479.9,
+    "nutrition_data_point": 1949.0
   },
   {
     "date": "2025-12-23",
     "recovery_value": 82.08132833927719,
     "sleep_duration": 7.11,
     "sleep_consistency": 0.878,
-    "exercise_load": 436.6,
-    "nutrition_value": 2368.0
+    "excercise_data_point": 436.6,
+    "nutrition_data_point": 2368.0
   },
   {
     "date": "2025-12-24",
     "recovery_value": 81.17282692864514,
     "sleep_duration": 7.86,
     "sleep_consistency": 0.829,
-    "exercise_load": 385.7,
-    "nutrition_value": 2139.0
+    "excercise_data_point": 385.7,
+    "nutrition_data_point": 2139.0
   },
   {
     "date": "2025-12-25",
     "recovery_value": 82.7611989779242,
     "sleep_duration": 7.87,
     "sleep_consistency": 0.776,
-    "exercise_load": 485.1,
-    "nutrition_value": 2188.0
+    "excercise_data_point": 485.1,
+    "nutrition_data_point": 2188.0
   },
   {
     "date": "2025-12-26",
     "recovery_value": 82.88580331160057,
     "sleep_duration": 7.89,
     "sleep_consistency": 0.835,
-    "exercise_load": 427.9,
-    "nutrition_value": 2173.0
+    "excercise_data_point": 427.9,
+    "nutrition_data_point": 2173.0
   },
   {
     "date": "2025-12-27",
     "recovery_value": 81.73480298734317,
     "sleep_duration": 7.34,
     "sleep_consistency": 0.842,
-    "exercise_load": 355.9,
-    "nutrition_value": 2321.0
+    "excercise_data_point": 355.9,
+    "nutrition_data_point": 2321.0
   },
   {
     "date": "2025-12-28",
     "recovery_value": 79.33273054288242,
     "sleep_duration": 7.63,
     "sleep_consistency": 0.94,
-    "exercise_load": 778.2,
-    "nutrition_value": 2122.0
+    "excercise_data_point": 778.2,
+    "nutrition_data_point": 2122.0
   },
   {
     "date": "2025-12-29",
     "recovery_value": 81.80660352224538,
     "sleep_duration": 8.1,
     "sleep_consistency": 0.867,
-    "exercise_load": 487.1,
-    "nutrition_value": 2062.0
+    "excercise_data_point": 487.1,
+    "nutrition_data_point": 2062.0
   },
   {
     "date": "2025-12-30",
     "recovery_value": 80.03301242630548,
     "sleep_duration": 7.71,
     "sleep_consistency": 0.808,
-    "exercise_load": 514.4,
-    "nutrition_value": 2085.0
+    "excercise_data_point": 514.4,
+    "nutrition_data_point": 2085.0
   },
   {
     "date": "2025-12-31",
     "recovery_value": 74.70053578948752,
     "sleep_duration": 7.36,
     "sleep_consistency": 0.79,
-    "exercise_load": 553.4,
-    "nutrition_value": 1859.0
+    "excercise_data_point": 553.4,
+    "nutrition_data_point": 1859.0
   },
   {
     "date": "2026-01-01",
     "recovery_value": 81.09015271402558,
     "sleep_duration": 7.52,
     "sleep_consistency": 0.809,
-    "exercise_load": 505.9,
-    "nutrition_value": 1938.0
+    "excercise_data_point": 505.9,
+    "nutrition_data_point": 1938.0
   },
   {
     "date": "2026-01-02",
     "recovery_value": 81.0769209260365,
     "sleep_duration": 7.62,
     "sleep_consistency": 0.833,
-    "exercise_load": 492.3,
-    "nutrition_value": 1940.0
+    "excercise_data_point": 492.3,
+    "nutrition_data_point": 1940.0
   },
   {
     "date": "2026-01-03",
     "recovery_value": 75.64848809983833,
     "sleep_duration": 7.48,
     "sleep_consistency": 0.783,
-    "exercise_load": 433.6,
-    "nutrition_value": 1822.0
+    "excercise_data_point": 433.6,
+    "nutrition_data_point": 1822.0
   },
   {
     "date": "2026-01-04",
     "recovery_value": 79.3937657125321,
     "sleep_duration": 7.93,
     "sleep_consistency": 0.858,
-    "exercise_load": 587.6,
-    "nutrition_value": 2007.0
+    "excercise_data_point": 587.6,
+    "nutrition_data_point": 2007.0
   },
   {
     "date": "2026-01-05",
     "recovery_value": 78.21356114441707,
     "sleep_duration": 7.83,
     "sleep_consistency": 0.88,
-    "exercise_load": 718.3,
-    "nutrition_value": 1772.0
+    "excercise_data_point": 718.3,
+    "nutrition_data_point": 1772.0
   },
   {
     "date": "2026-01-06",
     "recovery_value": 78.20580274848743,
     "sleep_duration": 7.81,
     "sleep_consistency": 0.725,
-    "exercise_load": 519.7,
-    "nutrition_value": 1795.0
+    "excercise_data_point": 519.7,
+    "nutrition_data_point": 1795.0
   },
   {
     "date": "2026-01-07",
     "recovery_value": 78.33520056921078,
     "sleep_duration": 8.06,
     "sleep_consistency": 0.87,
-    "exercise_load": 491.6,
-    "nutrition_value": 1816.0
+    "excercise_data_point": 491.6,
+    "nutrition_data_point": 1816.0
   },
   {
     "date": "2026-01-08",
     "recovery_value": 83.45616794960874,
     "sleep_duration": 8.28,
     "sleep_consistency": 0.758,
-    "exercise_load": 489.4,
-    "nutrition_value": 2271.0
+    "excercise_data_point": 489.4,
+    "nutrition_data_point": 2271.0
   },
   {
     "date": "2026-01-09",
     "recovery_value": 79.86470685131904,
     "sleep_duration": 7.34,
     "sleep_consistency": 0.923,
-    "exercise_load": 485.5,
-    "nutrition_value": 1860.0
+    "excercise_data_point": 485.5,
+    "nutrition_data_point": 1860.0
   },
   {
     "date": "2026-01-10",
     "recovery_value": 83.00119874460728,
     "sleep_duration": 7.25,
     "sleep_consistency": 0.863,
-    "exercise_load": 431.1,
-    "nutrition_value": 2074.0
+    "excercise_data_point": 431.1,
+    "nutrition_data_point": 2074.0
   }
 ]

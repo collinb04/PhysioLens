@@ -1,7 +1,4 @@
-# app/services/analytics/stability.py
 """
-Recovery stability detection.
-
 This module decides whether recovery has been "stable" over the analysis window.
 Stable means: low variability and few/no meaningful dip events.
 
@@ -12,10 +9,10 @@ ranking factors as "dominant" because there's little recovery breakdown to expla
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List
 
-from app.domain.models import DailyRecord
-from app.domain.constants import AnalysisAssumptions  # adjust import path if needed
+from app.domain.daily_record import DailyRecord
+from app.domain.config import AnalysisAssumptions  
 from app.services.analytics.baselines import BaselineStats
 
 
@@ -41,27 +38,14 @@ def is_stable_recovery(
     records: List[DailyRecord],
     recovery_baseline: BaselineStats,
     dip_count: int,
-    assumptions: AnalysisAssumptions,
+    constants: AnalysisAssumptions,
 ) -> StabilityResult:
     """
-    Determine whether recovery is stable.
-
-    Inputs:
-    - records: DailyRecord list (windowed or full history)
-    - recovery_baseline: baseline stats for recovery_value
-    - dip_count: number of dip events detected (deduped)
-    - assumptions: central config
-
     Returns:
     - StabilityResult(stable=bool, meta=dict)
-
-    Heuristic definition:
-    - Must have sufficient history and recovery observations
-    - Recovery std must be low relative to mean (low coefficient of variation)
-    - And dips must be rare (usually 0; optionally allow 1)
     """
     # Gate: enough history
-    if len(records) < assumptions.min_history_days:
+    if len(records) < constants.min_history_days:
         return StabilityResult(
             stable=False,
             meta={"reason": "insufficient_history", "history_days": len(records)},
@@ -73,7 +57,7 @@ def is_stable_recovery(
             meta={"reason": "missing_recovery_baseline"},
         )
 
-    if recovery_baseline.n < assumptions.min_observations:
+    if recovery_baseline.n < constants.min_observations:
         return StabilityResult(
             stable=False,
             meta={"reason": "insufficient_recovery_observations", "n": recovery_baseline.n},
@@ -89,13 +73,9 @@ def is_stable_recovery(
     else:
         cv = abs(sd / mu)
 
-    # Conservative stability thresholds:
-    # - low relative variance (cv <= 0.08 ~ "tight" signal)
-    # - very few dips
-    #
-    # These are intentionally conservative; tune later if needed.
+    # Intentionally conservative- tune later if needed.
     cv_threshold = 0.08
-    allowed_dips = 0  # strict definition for "stable"
+    allowed_dips = 0  # definition for stable
 
     stable_by_variance = (cv is not None and cv <= cv_threshold) or (cv is None and sd == 0.0)
     stable_by_dips = dip_count <= allowed_dips

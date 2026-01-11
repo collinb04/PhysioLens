@@ -18,8 +18,8 @@ from dataclasses import dataclass
 from datetime import date
 from typing import List, Optional
 
-from app.domain.models import DailyRecord
-from app.domain.constants import AnalysisAssumptions 
+from app.domain.daily_record import DailyRecord
+from app.domain.config import AnalysisAssumptions 
 from app.services.analytics.baselines import BaselineStats, z_score
 
 
@@ -36,7 +36,7 @@ class DipEvent:
 class DipDetectionResult:
     large: List[DipEvent]
     persistent: List[DipEvent]
-    all: List[DipEvent] # no duplications with large preference
+    all: List[DipEvent] # no duplications and large preference
 
 @dataclass(frozen=True)
 class DipThresholds:
@@ -55,28 +55,28 @@ class DipThresholds:
 def detect_recovery_dips(
     records: List[DailyRecord],
     recovery_baseline: BaselineStats,
-    assumptions: AnalysisAssumptions,
+    constants: AnalysisAssumptions,
     thresholds: DipThresholds = DipThresholds(),
 ) -> List[DipEvent]:
     """
     Detect recovery dips from a list of DailyRecord objects.
 
     Requirements / gates:
-    - Must have at least assumptions.min_history_days records (conservative)
-    - Must have recovery_baseline.n >= assumptions.min_observations
+    - Must have at least constants.min_history_days records (conservative)
+    - Must have recovery_baseline.n >= constants.min_observations
     - Dip detection is based ONLY on recovery_value deviations
 
     Returns:
     - A list of DipEvent, ordered by date, with duplicate dates removed
       (if a day is both "large" and part of a "persistent" run, it is labeled "large").
     """
-    if len(records) < assumptions.min_history_days:
+    if len(records) < constants.min_history_days:
         return []
 
     if recovery_baseline.mean is None or recovery_baseline.std is None:
         return []
 
-    if recovery_baseline.n < assumptions.min_observations:
+    if recovery_baseline.n < constants.min_observations:
         return []
 
     # Compute per-day z-scores (None when not computable)
@@ -153,3 +153,8 @@ def detect_recovery_dips(
 
     # Return chronologically
     return [by_date[k] for k in sorted(by_date.keys())]
+
+
+    # If your detect_recovery_dips currently returns List[DipEvent],
+    # you should adapt it to DipDetectionResult (recommended).
+    # If you already updated dips.py to return DipDetectionResult, this will be unnecessary.

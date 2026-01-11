@@ -132,11 +132,11 @@
 
           <KpiCard
             label="Signal strength"
-            :value="(summary?.insight.confidence ?? '—')"
+            :value="(summary?.insight.signal_strength ?? '—')"
             :sub="summary?.stable
               ? 'no dominant factor detected in this window'
               : 'association strength based on consistency, magnitude, and data sufficiency'"
-            :tooltip="`Signal strength is ${(summary?.insight.confidence ?? '—')}. It reflects how consistently and strongly this pattern appears in the selected window and does not imply causation.`"
+            :tooltip="`Signal strength is ${(summary?.insight.signal_strength ?? '—')}. It reflects how consistently and strongly this pattern appears in the selected window and does not imply causation.`"
           />
         </section>
 
@@ -158,9 +158,9 @@
                 </text>
                 <span
                   class="inline-flex items-center rounded-lg px-3 py-1 text-xs"
-                  :class="confidencePillClass"
+                  :class="signal_strengthPillClass"
                 >
-                  {{ summary?.insight.confidence }} 
+                  {{ summary?.insight.signal_strength }} 
                 </span>
               </div>
             </div>
@@ -186,7 +186,7 @@
               <span 
                 class="rounded-lg border border-gray-200 px-3 py-1 text-gray-700 relative group cursor-pointer hover:bg-gray-100"
               >
-                window: <span class="font-medium">{{ summary?.window_days }} days</span>
+                window: <span class="font-medium">{{ summary?.days_window }} days</span>
                 <span 
                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 rounded-lg border border-gray-200 
                 bg-white px-3 py-2 text-xs text-gray-700 shadow-lg opacity-0 invisible group-hover:opacity-100 
@@ -319,9 +319,9 @@
 
                   <div class="grid grid-cols-2 gap-2 text-sm">
                     <Metric label="Recovery" :value="fmt(selectedDay.recovery_value)" />
-                    <Metric label="Exercise" :value="fmt(selectedDay.exercise_load) + ' cal'" />
+                    <Metric label="Exercise" :value="fmt(selectedDay.excercise_data_point) + ' cal'" />
                     <Metric label="Sleep" :value="fmt(selectedDay.sleep_duration) + ' hrs'" />
-                    <Metric label="Nutrition" :value="fmtInt(selectedDay.nutrition_value) + ' cal'" />
+                    <Metric label="Nutrition" :value="fmtInt(selectedDay.nutrition_data_point) + ' cal'" />
                   </div>
 
                   <div class="pt-2 border-t border-gray-200">
@@ -366,7 +366,7 @@ const scenarios: Scenario[] = [
   { key: 'sleep', label: 'Sleep', userId: 'sleep1' },
 ]
 
-const activeScenario = ref<Scenario>(scenarios[1]) // default = exercise demo
+const activeScenario = ref<Scenario>(scenarios[1]!) // default = exercise demo
 
 const selectScenario = async (s: Scenario) => {
   activeScenario.value = s
@@ -394,8 +394,8 @@ const error = ref<string | null>(null)
 
 const selectedDate = ref<string | null>(null)
 
-const confidencePillClass = computed(() => {
-  const c = summary.value?.insight.confidence
+const signal_strengthPillClass = computed(() => {
+  const c = summary.value?.insight.signal_strength
   if (c === 'high') return 'bg-green-500 text-white'
   if (c === 'medium') return 'bg-yellow-500 text-white'
   return 'border-gray-200 bg-gray-50 text-gray-800'
@@ -430,7 +430,10 @@ const selectByIndex = (i: number) => {
   const arr = days.value
   if (!arr.length) return
   const idx = Math.max(0, Math.min(arr.length - 1, i))
-  selectedDate.value = arr[idx].date
+  const day = arr[idx]
+  if (day) {
+    selectedDate.value = day.date
+  }
 }
 
 const goPrevDay = () => selectByIndex(selectedIndex.value - 1)
@@ -448,7 +451,7 @@ const goToToday = () => {
   // nearest past day
   let best = -1
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].date <= t) best = i
+    if (arr[i] && arr[i].date <= t) best = i
   }
   if (best !== -1) return selectByIndex(best)
 
