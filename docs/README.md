@@ -64,8 +64,8 @@ Most health dashboards overwhelm users with metrics. PhysioLens reduces complexi
 ---
 
 ## What it looks like
-![Sleep associated factor demo scenario insights](docs/images/SleepInsights.png)
-![Sleep associated factor demo scenario graph and metrics](docs/images/SleepChart.png)
+![Sleep associated factor demo scenario insights](/images/SleepInsights.png)
+![Sleep associated factor demo scenario graph and metrics](/images/SleepChart.png)
 
 ## Demo Scenarios
 
@@ -91,9 +91,9 @@ python ./data/generate_seed_data.py
 ```
 
 ## Default Demo User IDs
-    stable1
-    exercise1
-    sleep1
+    User1
+    UserExercise
+    UserSleep
 
 ---
 
