@@ -451,7 +451,8 @@ const goToToday = () => {
   // nearest past day
   let best = -1
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i] && arr[i].date <= t) best = i
+    const day = arr[i]
+    if (day && day.date <= t) best = i
   }
   if (best !== -1) return selectByIndex(best)
 

@@ -210,27 +210,44 @@ def build_insight(
     # Body
     parts: List[str] = []
     parts.append(
-        f"{primary_factor.capitalize()} explains the largest share of recovery dips in this window ({primary_percent:.0f}%)."
+        f"{primary_factor.capitalize()} correlates with the largest share of recovery dips in this window ({primary_percent:.0f}%)."
     )
     if runner_up:
-        parts.append(f"For you, recovery appears more sensitive to {primary_factor} than to {runner_up}.")
+        parts.append(
+            f"For you, recovery appears more sensitive to {primary_factor} than to {runner_up}."
+        )
 
-    # State/stability messaging 
+    parts.append(
+        "Context note: Factor attribution reflects associations within the available data and may be influenced by interactions between factors. "
+        "For example, increased training load without adequate sleep or nutrition may amplify the apparent impact of sleep on recovery."
+    )
+
+    # State / stability messaging
     if state != "unknown":
         state_phrase = {
             "below_normal": "below your normal range",
             "within_normal": "within your normal range",
             "above_normal": "above your normal range",
         }.get(state, "relative to your normal range")
-        parts.append(f"Current state: {primary_factor} is {state_phrase}.")
+
+        parts.append(
+            f"Current state: {primary_factor} is {state_phrase}."
+        )
     else:
-        parts.append(f"Current state: {primary_factor} is unavailable or missing for recent days.")
+        parts.append(
+            f"Current state: {primary_factor} data is unavailable or insufficient for recent days."
+        )
 
     if stability != "unknown":
         stab_phrase = "highly variable" if stability == "volatile" else "consistent"
-        parts.append(f"Stability: {primary_factor} has been {stab_phrase} recently.")
+        parts.append(
+            f"Stability: {primary_factor} has been {stab_phrase} recently."
+        )
     else:
-        parts.append(f"Stability: not enough data to evaluate {primary_factor} consistency.")
+        parts.append(
+            f"Stability: not enough data to evaluate recent {primary_factor} consistency."
+        )
+
 
     body = " ".join(parts)
 
