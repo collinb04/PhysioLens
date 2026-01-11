@@ -130,6 +130,7 @@ A large language model (LLM) is layered on top of the analytics to provide **gen
 ### Backend Setup
 ```bash
 cd Backend
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python main.py
