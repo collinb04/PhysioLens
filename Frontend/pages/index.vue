@@ -5,7 +5,10 @@
       <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
           <div>
-            <div class="font-semibold leading-5">PhysioLens DEMO</div>
+            <div class="flex flex-row items-center">
+              <img src="/images/Plogo.png" class="h-8"/>
+              <div class="font-semibold">PhysioLens DEMO</div>
+            </div>
             <div class="text-sm text-gray-500">Recovery factors analysis dashboard</div>
           </div>
         </div>
