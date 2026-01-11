@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node / Nuxt
+node_modules/
+.nuxt/
+.output/
+dist/
+
+# Env
+.env
+
+# OS
+.DS_Store
