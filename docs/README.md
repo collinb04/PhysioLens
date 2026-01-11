@@ -145,9 +145,10 @@ npm run dev
 ---
 
 ## Testing & Validation
-The project includes:
-- Unit tests for core mathematical components (z-scores, baselines, dip detection)
-- Scenario-level validation to ensure expected dominant factor attribution 
-- Deterministic outputs to ensure reproducibility across runs 
+
+Validation focuses on correctness and reliability rather than exhaustive coverage:
+- Unit tests for core math and logic (baselines, z-scores, dip detection)
+- Scenario checks to ensure the dominant factor matches each demo dataset
+- Deterministic outputs so results are reproducible across runs
 
 

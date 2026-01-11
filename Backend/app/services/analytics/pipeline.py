@@ -1,4 +1,3 @@
-# app/services/analytics/pipeline.py
 """
 End-to-end pipeline orchestrator.
 

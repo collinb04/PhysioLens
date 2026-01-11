@@ -21,9 +21,11 @@ Backend/
 │   │   └── ingest/          # Data ingestion layer
 │   │
 │   ├── tests/
-│       ├──  run_pipeline_tests.py
-│       ├── stability.py # Quantifies each factors volatility over time.
-│       ├── stability.py # Quantifies each factors volatility over time.
+│       ├── pipeline_sanity_check.py        # End-to-end smoke test for the full analytics pipeline
+│       ├── test_baselines.py               # Tests baseline math, windowing, and z-score safety
+│       ├── test_dips.py                    # Tests recovery dip detection (large vs persistent, gating)
+│       ├── test_pareto_attribution.py      # Tests factor attribution logic, ranking, and dominance
+│
 │ 
 ├── data/                     # Seed / demo datasets
 │   ├── generate_seed_data.py # Generates random data sets for specfic demo types

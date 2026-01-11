@@ -77,34 +77,6 @@ def _get_field_value(r: DailyRecord, field: str) -> Optional[float]:
     except (TypeError, ValueError):
         return None
 
-
-def _compute_factor_abs_z(
-    record: DailyRecord,
-    factor: FactorConfig,
-    baselines: Dict[str, BaselineStats],
-) -> Optional[float]:
-    """
-    Returns the factor's "strength" as max abs z-score among its fields.
-    - Sleep uses max(|z(duration)|, |z(consistency)|)
-    - Exercise/Nutrition use their single metric
-    """
-    best: Optional[float] = None
-    for field in factor.fields:
-        b = baselines.get(field)
-        if b is None:
-            continue
-        val = _get_field_value(record, field)
-        if val is None:
-            continue
-        z = z_score(val, b)
-        if z is None:
-            continue
-        az = abs(float(z))
-        if best is None or az > best:
-            best = az
-    return best
-
-
 def _is_factor_abnormal(
     record: DailyRecord,
     factor: FactorConfig,
