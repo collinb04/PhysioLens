@@ -87,7 +87,7 @@ These scenarios allow reviewers to verify that outputs change meaningfully based
 
 ```bash
 cd Backend
-python ./data/generate_seed_data.py
+python data/generate_seed_data.py
 ```
 
 ## Default Demo User IDs
