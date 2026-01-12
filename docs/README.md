@@ -121,7 +121,17 @@ python data/generate_seed_data.py
 
 ## AI & ML Approach
 
-The core analytics pipeline is intentionally **deterministic, explainable, and auditable**. The system uses classical applied machine learning techniques, including personalized baseline modeling, anomaly detection via standardized deviations, temporal persistence analysis, and attribution under uncertainty.
+PhysioLens uses applied machine learning techniques to model personal health data in a structured, explainable way.
+
+At its core, the system learns **per-user statistical baselines** for recovery, sleep, exercise, and nutrition from historical data. These baselines adapt to the individual rather than relying on fixed thresholds or population averages, which is a fundamental machine learning concept.
+
+The system then performs **anomaly detection** on the recovery signal by identifying statistically meaningful deviations from the learned baseline. These deviations are classified as either large or persistent recovery dips based on magnitude and duration.
+
+To explain these dips, PhysioLens applies **standardized deviation analysis** (z-scores) to other behavioral signals and evaluates how consistently those signals deviate from baseline around recovery events. This allows the system to estimate associations under uncertainty rather than making deterministic rules.
+
+Finally, a **Pareto-style aggregation** ranks factors based on consistency, magnitude, and temporal alignment, producing a prioritized explanation rather than a single-point prediction.
+
+The pipeline is intentionally deterministic and explainable. While it does not use black-box neural models, it applies classical machine learning principles—personalized modeling, anomaly detection, feature attribution, and evidence aggregation—to transform raw time-series data into interpretable insight.
 
 ---
 
