@@ -5,7 +5,7 @@ https://youtu.be/VeDotGIa4bw
 
 ## Project Overview
 
-PhysioLens is a personal health analytics web application designed to consolidate multiple user-selected data sources such as, sleep, exercise, and nutrition—into a single, interpretable view of recovery. Rather than distributing attention evenly across all inputs, PhysioLens surfaces the single factor most responsible for recovery instability in the current window.
+PhysioLens is a personal health analytics web application designed to consolidate multiple user-selected data sources such as, sleep, exercise, and nutrition—into a single, interpretable view of recovery. Rather than distributing attention evenly across all inputs, PhysioLens surfaces the factor most consistently associated with recovery instability in the current window.
 
 The system is inspired by **Pareto’s Law**, the idea that a small number of inputs often explain a disproportionate share of outcomes. By quantifying how strongly each factor is associated with recovery dips, PhysioLens helps users prioritize stabilization of the factor most likely to yield the greatest improvement, rather than spreading attention evenly across all inputs.
 
@@ -14,6 +14,29 @@ PhysioLens intentionally emphasizes **explainable, per-user analysis** over blac
 ## Why PhysioLens
 
 Most health dashboards overwhelm users with metrics. PhysioLens reduces complexity by identifying which factor matters *most right now*, enabling focused intervention instead of diffuse optimization.
+
+---
+
+## Design Choices
+
+- **Pareto-driven prioritization:**  
+  While sleep, exercise, and nutrition all matter, PhysioLens focuses on identifying which factor is most likely to have a disproportionate impact on recovery in a given window, enabling more efficient prioritization.
+
+- **Explainable over predictive:**  
+  PhysioLens explains observed recovery dips rather than predicting future outcomes. All results are grounded in transparent, traceable statistics so users can understand where insights come from.
+
+- **No circular logic:**  
+  Recovery dips are defined exclusively from the recovery signal. Sleep, exercise, and nutrition are used only afterward for attribution, preventing feedback loops.
+
+- **Per-user baselines:**  
+  Deviations are measured relative to each user’s own historical baseline, not population averages, acknowledging that normal ranges differ across individuals.
+
+- **Conservative outputs:**  
+  Results are framed strictly as associations, not causation, and the system avoids medical advice or diagnosis to ensure responsible interpretation.
+
+- **Scenario-first validation:**  
+  Controlled demo datasets are used to validate system behavior and clearly demonstrate how different user archetypes produce different insights under identical logic.
+
 
 ---
 
